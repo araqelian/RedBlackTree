@@ -325,17 +325,19 @@ void	RedBlackTree::Delete_fixup(Node* node)
 			}
 			else if (w->right->color == false)
 			{
-				w->left->color = false;
-				w->color = true;
-				Right_rotation(w);
-				w = node->p->right;
+				if (w->right->color == false)
+				{
+					w->left->color = false;
+					w->color = true;
+					Right_rotation(w);
+					w = node->p->right;
+				}
+				w->color = node->p->color;
+				node->p->color = false;
+				w->right->color = false;
+				Left_rotation(node->p);
+				node = this->root;
 			}
-
-			w->color = node->p->color;
-			node->p->color = false;
-			w->right->color = false;
-			Left_rotation(node->p);
-			node = this->root;
 		}
 		else
 		{
@@ -354,19 +356,21 @@ void	RedBlackTree::Delete_fixup(Node* node)
 				w->color = true;
 				node = node->p;
 			}
-			else if (w->left->color == false)
+			else
 			{
-				w->right->color = false;
-				w->color = true;
-				Right_rotation(w);
-				w = node->p->left;
+				if (w->left->color == false)
+				{
+					w->right->color = false;
+					w->color = true;
+					Right_rotation(w);
+					w = node->p->left;
+				}
+				w->color = node->p->color;
+				node->p->color = false;
+				w->left->color = false;
+				Left_rotation(node->p);
+				node = this->root;
 			}
-
-			w->color = node->p->color;
-			node->p->color = false;
-			w->left->color = false;
-			Left_rotation(node->p);
-			node = this->root;
 		}
 	}
 	this->root->color = false;
